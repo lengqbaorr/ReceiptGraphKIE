@@ -1,0 +1,24 @@
+# Dataset (kept outside Git; approximately 3.2 GB)
+CORD1000/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets and local configuration
+.env
+.env.*
+*.key
+
+# Generated models and experiment artifacts
+checkpoints/
+outputs/
+artifacts/
+*.pt
+*.pth
+*.ckpt
