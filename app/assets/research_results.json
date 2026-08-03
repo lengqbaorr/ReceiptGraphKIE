@@ -1,0 +1,39 @@
+{
+  "metric_scope": "Word-level semantic-label F1; O is excluded from entity Macro/Micro F1.",
+  "hybrid": {
+    "name": "LayoutLMv3 + Relation-GATv2 + Word-CRF",
+    "seeds": 5,
+    "dev_macro_f1_mean": 0.9247,
+    "dev_macro_f1_std": 0.0049,
+    "test_macro_f1_mean": 0.9398,
+    "test_macro_f1_std": 0.0161,
+    "test_micro_f1_mean": 0.9764,
+    "test_micro_f1_std": 0.0037,
+    "test_weighted_f1_mean": 0.9736,
+    "test_weighted_f1_std": 0.0032
+  },
+  "per_class_hybrid": [
+    {"label":"S-EMONEY_PAYMENT","f1_mean":0.639444,"f1_std":0.183842,"support":4},
+    {"label":"S-OTHER","f1_mean":0.766206,"f1_std":0.047321,"support":41},
+    {"label":"S-MENUTYPE_CNT","f1_mean":0.844651,"f1_std":0.022769,"support":17},
+    {"label":"S-CARD_PAYMENT","f1_mean":0.958088,"f1_std":0.040253,"support":51},
+    {"label":"S-MENU_DISCOUNT_PRICE","f1_mean":0.960434,"f1_std":0.019079,"support":30},
+    {"label":"S-CASH","f1_mean":0.962312,"f1_std":0.013413,"support":148},
+    {"label":"S-MENUQTY_CNT","f1_mean":0.963588,"f1_std":0.009026,"support":67},
+    {"label":"S-DISCOUNT","f1_mean":0.971429,"f1_std":0.063888,"support":16},
+    {"label":"S-MENU_UNITPRICE","f1_mean":0.975329,"f1_std":0.008231,"support":69},
+    {"label":"S-MENU_CNT","f1_mean":0.980376,"f1_std":0.007030,"support":246},
+    {"label":"S-CHANGE","f1_mean":0.980408,"f1_std":0.004403,"support":120},
+    {"label":"S-MENU_PRICE","f1_mean":0.980483,"f1_std":0.002431,"support":268},
+    {"label":"S-TOTAL","f1_mean":0.980943,"f1_std":0.002986,"support":209},
+    {"label":"S-SUBTOTAL","f1_mean":0.984977,"f1_std":0.005534,"support":145},
+    {"label":"S-MENU_NM","f1_mean":0.986971,"f1_std":0.003924,"support":740},
+    {"label":"S-MENU_NUM","f1_mean":0.990476,"f1_std":0.021296,"support":11},
+    {"label":"S-SERVICE","f1_mean":0.992653,"f1_std":0.010925,"support":40},
+    {"label":"S-TAX","f1_mean":0.997628,"f1_std":0.005303,"support":128}
+  ],
+  "limitations": [
+    "Benchmark metrics use CORD-provided words and bounding boxes (oracle OCR).",
+    "The checkpoint-only download does not contain per-seed result CSVs; the dashboard does not fabricate unavailable seed values."
+  ]
+}

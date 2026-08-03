@@ -1,0 +1,9 @@
+.git
+.agents
+.codex
+CORD1000
+*.ipynb
+__pycache__
+.pytest_cache
+hybrid_model_best.pt
+

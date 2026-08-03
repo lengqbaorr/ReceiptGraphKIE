@@ -1,62 +1,49 @@
 # ReceiptGraphKIE
 
-Graph-enhanced key information extraction for receipt understanding on CORD-1000. The project compares a LayoutLMv3–CRF baseline with a hybrid model that combines LayoutLMv3, a two-layer symbolic Relation-GATv2, hidden-state fusion, and a word-level CRF.
-
-## Architecture
+Hybrid receipt key-information extraction using **LayoutLMv3 + symbolic
+Relation-GATv2 + Word-CRF**.
 
 ```text
-Receipt image + oracle text/bounding boxes
-                    │
-                LayoutLMv3
-                    │
-           Word-level representations
-             ┌──────┴──────┐
-       Base classifier   Symbolic Relation-GATv2
-                              │
-                         Hidden fusion
-                              │
-                     Fusion classifier + CRF
-                              │
-                       Receipt entities
+Receipt image + words/bounding boxes
+              -> LayoutLMv3
+              -> symbolic spatial relation graph
+              -> Relation-GATv2 message passing
+              -> hidden fusion + Word-CRF
+              -> structured receipt fields
 ```
 
-The symbolic graph connects words using exact line membership, cross-line column continuity, directional spatial relations, and local KNN fallback edges. Four development ablations—`original`, `shuffled`, `self_loop_only`, and `graph_off`—measure whether the graph topology provides useful information.
+## ReceiptGraph Explorer
 
-## Results
+The FastAPI dashboard supports:
 
-Entity Macro F1 is computed over 18 entity classes, excluding `O`.
+- Annotated CORD research samples and uploaded real receipts.
+- EasyOCR for uploaded images.
+- Word, bounding-box, semantic-label and confidence overlays.
+- Interactive KNN, LEFT, RIGHT, ABOVE, BELOW, SAME_LINE and
+  NEXT_LINE_COLUMN relations.
+- Neighbor geometry and final-layer graph attention.
+- Structured JSON/CSV export.
+- Hybrid aggregate metrics and per-class F1.
 
-| Model | Seeds | Dev Macro F1 | Test Macro F1 | Test Micro F1 |
-|---|---:|---:|---:|---:|
-| LayoutLMv3 + Word-CRF | 3 | 0.9256 ± 0.0100 | 0.9233 ± 0.0207 | 0.9712 ± 0.0043 |
-| LayoutLMv3 + Relation-GATv2 + Word-CRF | 5 | 0.9247 ± 0.0049 | **0.9398 ± 0.0161** | **0.9764 ± 0.0037** |
+```powershell
+pip install -r requirements-demo.txt
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
 
-The hybrid model improves Test Macro F1 by **1.65 percentage points** over the baseline. On development data, the original graph outperforms shuffled edges by **2.0159 ± 0.4385 points**, while disabling the graph reduces Macro F1 by **0.9464 ± 0.3713 points**.
+Open <http://127.0.0.1:8000>. See [DEMO.md](DEMO.md) for API, Docker and
+configuration instructions.
 
 ## Repository
 
 ```text
-.
-├── Baseline.ipynb   # LayoutLMv3 + word-level CRF, three seeds
-├── Hybrid.ipynb     # Symbolic Relation-GATv2 hybrid, five seeds and ablations
-└── CORD1000/        # CORD train/dev/test images and annotations
+app/                    # Shared model, graph, inference, API and dashboard
+Hybrid_final.ipynb      # Final Hybrid training notebook using shared modules
+hybrid_model_best.zip   # Local checkpoint artifact (ignored by Git)
+tests/                  # Graph, post-processing and API tests
 ```
 
-## Reproducing the Experiments
+## Evaluation scope
 
-1. Upload the repository or notebooks to Kaggle.
-2. Enable a GPU runtime and attach the CORD-1000 dataset.
-3. Run `Baseline.ipynb` or `Hybrid.ipynb` from top to bottom.
-4. Download the generated artifact ZIP from `/kaggle/working/`.
-
-Each seed is initialized independently. Checkpoints are selected exclusively by development Entity Macro F1, and the test split is evaluated only after model selection. Results are reported as mean ± sample standard deviation.
-
-## Evaluation Scope
-
-The notebooks use reference CORD text and bounding boxes with OCR disabled. The reported scores therefore evaluate the KIE component, not an end-to-end OCR-to-extraction pipeline. The baseline and hybrid use different seed counts, so their aggregate comparison should not be interpreted as a paired statistical superiority test.
-
-## References
-
-- [CORD](https://github.com/clovaai/cord)
-- [LayoutLMv3](https://huggingface.co/microsoft/layoutlmv3-base)
-- [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/)
+Reported metrics are word-level semantic-label F1. CORD evaluation uses
+dataset-provided words and bounding boxes; accuracy on uploaded receipts also
+depends on OCR quality and domain similarity.
