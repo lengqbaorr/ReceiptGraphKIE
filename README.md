@@ -12,6 +12,14 @@ Receipt image + words/bounding boxes
               -> structured receipt fields
 ```
 
+## Visualization
+
+![ReceiptGraphKIE hybrid inference with semantic bounding boxes and spatial graph nodes](Result.png)
+
+*Hybrid inference on a receipt. Bounding-box colors indicate predicted semantic
+fields, while nodes and connecting lines expose the spatial graph used by
+Relation-GATv2.*
+
 ## ReceiptGraph Explorer
 
 The FastAPI dashboard supports:
