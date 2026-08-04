@@ -12,14 +12,6 @@ Receipt image + words/bounding boxes
               -> structured receipt fields
 ```
 
-## Visualization
-
-![ReceiptGraphKIE hybrid inference with semantic bounding boxes and spatial graph nodes](Result.png)
-
-*Hybrid inference on a receipt. Bounding-box colors indicate predicted semantic
-fields, while nodes and connecting lines expose the spatial graph used by
-Relation-GATv2.*
-
 ## ReceiptGraph Explorer
 
 The FastAPI dashboard supports:
@@ -55,3 +47,7 @@ tests/                  # Graph, post-processing and API tests
 Reported metrics are word-level semantic-label F1. CORD evaluation uses
 dataset-provided words and bounding boxes; accuracy on uploaded receipts also
 depends on OCR quality and domain similarity.
+
+## Demo
+
+![ReceiptGraphKIE demo](demo.gif)
